@@ -9,6 +9,10 @@
 """
 module GeometricTools
 
+# Trick for avoiding OpenSSL compatibility issues with PyCall
+# https://discourse.julialang.org/t/error-loading-openssl-jll-version-openssl-3-3-0-not-found-when-precompiling-mldatasets/128977/3
+using OpenSSL_jll
+
 using Printf
 using LinearAlgebra
 using Requires
