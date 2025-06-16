@@ -91,13 +91,13 @@ end
 
     https://en.wikipedia.org/wiki/NACA_airfoil#Four-digit_series
 """
-function naca4digits(d1, d2, d34, xs)
+function naca4digits(d1, d2, d34, xs; sharp=false)
 
     m = d1/100
     p = d2/10
     t = d34/100
 
-    yt = 5*t * (0.2969*sqrt.(xs) .- 0.126*xs .- 0.3516*xs.^2 .+ 0.2843*xs.^3 .- 0.1015*xs.^4)
+    yt = 5*t * (0.2969*sqrt.(xs) .- 0.126*xs .- (sharp ? 0.3537 : 0.3516)*xs.^2 .+ 0.2843*xs.^3 .- 0.1015*xs.^4)
 
     if d1==0 && d2==0
         return xs, xs, yt, -yt
@@ -133,10 +133,10 @@ end
 
 
 function naca4digits(d1::Int64, d2::Int64, d34::Int64, n::Int64, r::Float64;
-                                                                    off::Real=0)
+                                                        off::Real=0, optargs...)
     xs = [float(x) for x in discretize(x->x, off, 1, n, r; central=true)]
     xs[end] = 1.0
-    xU, xL, yU, yL = naca4digits(d1, d2, d34, xs)
+    xU, xL, yU, yL = naca4digits(d1, d2, d34, xs; optargs...)
     xU[end] = 1.0
     xL[end] = 1.0
 
